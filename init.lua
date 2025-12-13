@@ -14,11 +14,17 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
+
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+
+-- Enable case-insensitive search by default (with smartcase for uppercase queries)
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
@@ -51,7 +57,7 @@ require("lazy").setup({
     },
     {
       'nvim-telescope/telescope.nvim',
-      tag = '0.1.8',  -- Recommended: Pin to a stable tag; update as needed
+      tag = '0.1.8', -- Recommended: Pin to a stable tag; update as needed
       dependencies = { 'nvim-lua/plenary.nvim' },
       config = function()
         require('telescope').setup({
@@ -62,14 +68,23 @@ require("lazy").setup({
             -- Enable preview for grep results
             file_previewer = require('telescope.previewers').vim_buffer_cat.new,
             grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
+            -- Case-insensitive search by default (smart_case respects uppercase for exact match)
+            case_mode = "smart_case",
           },
           pickers = {
             find_files = {
+              -- Case-insensitive file finding
+              case_mode = "ignore_case",
               -- Integrate with fff if desired, but default is fine
             },
             live_grep = {
               -- Default to ripgrep; assumes rg is installed (brew install ripgrep on macOS, etc.)
-              additional_args = { "--hidden", "--glob", "!**/.git/*" },  -- Search hidden files, skip .git
+              additional_args = { 
+                "--ignore-case",  -- Ignore case in searches
+                "--hidden", 
+                "--glob", 
+                "!**/.git/*" 
+              }, -- Search hidden files, skip .git
             },
           },
         })
@@ -79,7 +94,64 @@ require("lazy").setup({
         -- Optional: Add this if you want Telescope's file finder as a fallback (avoids overlap with fff)
         -- { '<leader>tf', '<cmd>Telescope find_files<cr>', desc = 'Telescope find files' },
       },
-    }
+    },
+    {
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v3.x",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons",  -- Enables file and folder icons
+        "MunifTanjim/nui.nvim",
+      },
+      config = function()
+        require("neo-tree").setup({
+          -- Default config; customize as needed (e.g., enable git status, window position)
+          sources = { "filesystem", "buffers", "git_status" },
+          window = {
+            position = "left",
+            width = 30,
+            mappings = {
+              ["<bs>"] = "navigate_up",
+              ["."] = "set_root",
+              ["~"] = "set_home",
+              ["<cr>"] = "open",
+              ["|"] = "open_vsplit",
+              ["s"] = "open_split",
+              ["o"] = "open_drop",
+              ["c"] = "close_node",
+              ["C"] = "collapse_all_nodes",
+              ["z"] = "expand_all_nodes",
+              ["a"] = "add",
+              ["d"] = "delete",
+              ["r"] = "rename",
+              ["y"] = "copy_to_clipboard",
+              ["x"] = "cut_to_clipboard",
+              ["p"] = "paste_from_clipboard",
+              ["c"] = "copy",  -- Takes the file name
+              ["q"] = "close_window",
+              ["R"] = "refresh",
+              ["?"] = "toggle_help",
+            },
+          },
+        })
+      end,
+      keys = {
+        { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
+      },
+    },
+    {
+      "nvim-treesitter/nvim-treesitter",
+      build = ":TSUpdate",
+      config = function()
+        require("nvim-treesitter.configs").setup({
+          ensure_installed = { "php", "html", "blade" },  -- Includes Blade parser for Laravel
+          highlight = { enable = true },
+          indent = { enable = true },
+          -- Optional: Auto-install parsers
+          auto_install = true,
+        })
+      end,
+    },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
