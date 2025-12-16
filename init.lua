@@ -26,28 +26,6 @@ vim.opt.smartcase = true
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- fff.nvim
-    {
-      'dmtrKovalenko/fff.nvim',
-      build = function()
-        require("fff.download").download_or_build_binary()
-      end,
-      opts = {
-        debug = {
-          enabled = true,
-          show_scores = true,
-        },
-      },
-      lazy = false,
-      keys = {
-        {
-          "ff",
-          function() require('fff').find_files() end,
-          desc = 'FFFind files',
-        }
-      }
-    },
-
     -- telescope.nvim
     {
       'nvim-telescope/telescope.nvim',
@@ -81,7 +59,6 @@ require("lazy").setup({
         { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = 'Live grep (search inside files)' },
       },
     },
-
     -- neo-tree.nvim
     {
       "nvim-neo-tree/neo-tree.nvim",
@@ -125,21 +102,6 @@ require("lazy").setup({
       keys = {
         { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
       },
-    },
-
-    -- nvim-treesitter (FIXED: load immediately)
-    {
-      "nvim-treesitter/nvim-treesitter",
-      build = ":TSUpdate",
-      lazy = false,  -- This is the key change: load on startup
-      config = function()
-        require("nvim-treesitter.configs").setup({
-          ensure_installed = { "php", "html", "blade" },
-          highlight = { enable = true },
-          indent = { enable = true },
-          auto_install = true,
-        })
-      end,
     },
   },
   install = { colorscheme = { "habamax" } },
