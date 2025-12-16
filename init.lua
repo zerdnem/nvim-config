@@ -43,6 +43,8 @@ require("lazy").setup({
           pickers = {
             find_files = {
               case_mode = "ignore_case",
+              hidden = true,  -- Show hidden files by default
+              no_ignore = false,  -- Respect .gitignore
             },
             live_grep = {
               additional_args = {
@@ -56,6 +58,11 @@ require("lazy").setup({
         })
       end,
       keys = {
+        -- File finder
+        { '<leader>ff', '<cmd>Telescope find_files<cr>', desc = 'Find files (Telescope)' },
+        -- File finder including hidden + ignoring .gitignore
+        { '<leader>fF', "<cmd>Telescope find_files hidden=true no_ignore=true<cr>", desc = 'Find all files (incl. hidden & ignored)' },
+        -- Live grep
         { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = 'Live grep (search inside files)' },
       },
     },
