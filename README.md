@@ -24,3 +24,10 @@
 
   ```sh
   git clone https://github.com/zerdnem/nvim-config ~/.config/nvim
+
+
+
+
+  ```powershell
+  git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
+  ```
