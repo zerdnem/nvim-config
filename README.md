@@ -10,6 +10,16 @@
   mv ~/.cache/nvim{,.bak}
   ```
 
+
+    ```powershell
+  # required
+  Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+
+  # optional but recommended
+  Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
+  ```
+
+
 - Clone the config
 
   ```sh
