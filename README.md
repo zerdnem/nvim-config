@@ -24,7 +24,7 @@
 
   ```sh
   git clone https://github.com/zerdnem/nvim-config ~/.config/nvim
-
+```
 
 
 
