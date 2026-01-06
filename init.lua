@@ -43,8 +43,8 @@ require("lazy").setup({
           pickers = {
             find_files = {
               case_mode = "ignore_case",
-              hidden = true,  -- Show hidden files by default
-              no_ignore = false,  -- Respect .gitignore
+              hidden = true, -- Show hidden files by default
+              no_ignore = false, -- Respect .gitignore
             },
             live_grep = {
               additional_args = {
@@ -66,6 +66,7 @@ require("lazy").setup({
         { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = 'Live grep (search inside files)' },
       },
     },
+
     -- neo-tree.nvim
     {
       "nvim-neo-tree/neo-tree.nvim",
@@ -98,11 +99,18 @@ require("lazy").setup({
               ["y"] = "copy_to_clipboard",
               ["x"] = "cut_to_clipboard",
               ["p"] = "paste_from_clipboard",
-              ["c"] = "copy",
               ["q"] = "close_window",
               ["R"] = "refresh",
               ["?"] = "toggle_help",
             },
+          },
+          filesystem = {
+            follow_current_file = {
+              enabled = true,          -- Automatically reveal and highlight the current file
+              leave_dirs_open = false, -- Collapse previously opened directories (optional: set true to keep them open)
+            },
+            -- Optional: better netrw replacement behavior
+            hijack_netrw_behavior = "open_current",
           },
         })
       end,
