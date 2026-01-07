@@ -43,8 +43,8 @@ require("lazy").setup({
           pickers = {
             find_files = {
               case_mode = "ignore_case",
-              hidden = true, -- Show hidden files by default
-              no_ignore = false, -- Respect .gitignore
+              hidden = true,
+              no_ignore = false,
             },
             live_grep = {
               additional_args = {
@@ -58,11 +58,8 @@ require("lazy").setup({
         })
       end,
       keys = {
-        -- File finder
         { '<leader>ff', '<cmd>Telescope find_files<cr>', desc = 'Find files (Telescope)' },
-        -- File finder including hidden + ignoring .gitignore
         { '<leader>fF', "<cmd>Telescope find_files hidden=true no_ignore=true<cr>", desc = 'Find all files (incl. hidden & ignored)' },
-        -- Live grep
         { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = 'Live grep (search inside files)' },
       },
     },
@@ -106,10 +103,9 @@ require("lazy").setup({
           },
           filesystem = {
             follow_current_file = {
-              enabled = true,          -- Automatically reveal and highlight the current file
-              leave_dirs_open = false, -- Collapse previously opened directories (optional: set true to keep them open)
+              enabled = true,
+              leave_dirs_open = false,
             },
-            -- Optional: better netrw replacement behavior
             hijack_netrw_behavior = "open_current",
           },
         })
@@ -117,6 +113,30 @@ require("lazy").setup({
       keys = {
         { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
       },
+    },
+
+    -- Comment.nvim - modern, Tree-sitter aware commenting
+    {
+      "numToStr/Comment.nvim",
+      event = "VeryLazy",
+      opts = {
+        toggler = {
+          line = 'gcc',  -- Toggle line comment
+          block = 'gbc', -- Toggle block comment
+        },
+        opleader = {
+          line = 'gc',
+          block = 'gb',
+        },
+        extra = {
+          above = 'gcO', -- Add comment above
+          below = 'gco', -- Add comment below
+          eol = 'gcA',   -- Add comment at end of line
+        },
+      },
+      config = function(_, opts)
+        require('Comment').setup(opts)
+      end,
     },
   },
   install = { colorscheme = { "habamax" } },
